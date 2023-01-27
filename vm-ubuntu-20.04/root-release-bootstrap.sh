@@ -21,13 +21,11 @@ apt-get update -qq
 
 apt-get -qq -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
 apt-get install -qq -y --no-install-recommends --fix-missing\
-  atom \
   ca-certificates \
   curl \
   emacs \
   git \
   iproute2 \
-  lubuntu-desktop \
   net-tools \
   python3 \
   python3-pip \
