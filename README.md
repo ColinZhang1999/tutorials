@@ -9,7 +9,7 @@ Please remember to apply for the free personal usage license, otherwise it will 
 
 4. Start the vm and go through the initialization phase. Set the user name and password as `vagrant`. Keep everything else as default.
 
-5. Open a terminal, run `sudo apt-get install git vim`
+5. Open a terminal, run `cd ~/Desktop`, then run `sudo apt-get install git vim`
 
 6. Run `git clone https://github.com/824728350/tutorials.git`
 
