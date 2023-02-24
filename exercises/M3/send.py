@@ -34,16 +34,12 @@ def get_if():
 
 def main():
     
-    if len(sys.argv)<3:
-        print('pass 2 arguments: <destination> "<message>"')
-        exit(1)
-    
     addr = socket.gethostbyname(sys.argv[1])
     iface = get_if()
 
     for i in range(100):
         pkt =  Ether(src=get_if_hwaddr(iface), dst='ff:ff:ff:ff:ff:ff')
-        pkt = pkt /IP(dst=addr) / TCP(dport=1234, sport=random.randint(49152,65535), seq=i) / Count(S2ByteCount=0,S3ByteCount=0) / sys.argv[2]
+        pkt = pkt /IP(dst=addr) / TCP(dport=1234, sport=random.randint(49152,65535), seq=i) / Count(S2ByteCount=0,S3ByteCount=0) / ("a"*(i+1))
         sendp(pkt, iface=iface, verbose=False)
 
 
