@@ -129,7 +129,7 @@ control MyIngress(inout headers hdr,
         curPort.read(prevPort, 0);
         bit<9> nextPort; 
 
-        if (timeDiff > 200000) {
+        if (timeDiff > 80000) {
             nextPort = (prevPort + 1) % (bit<9>)2 + 2;
             lastTime = standard_metadata.ingress_global_timestamp;
         } else {
