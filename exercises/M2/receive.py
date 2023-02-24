@@ -59,7 +59,10 @@ def handle_pkt(pkt):
     if TCP in pkt and pkt[TCP].dport == 1234:
         print("got a packet")
         pkt.show2()
-        indices.append(pkt["TCP"].seq)
+        indices.append(pkt[TCP].seq)
+        print("Total Bytes = {0}".format(pkt[Count].S2ByteCount+pkt[Count].S3ByteCount))
+        print("Lower path (via S2) = {0} bytes and upper path (via S3) = {1} bytes!".format(pkt[Count].S2ByteCount, pkt[Count].S3ByteCount))
+        # print("The number of unordered packets = {0}".format(count_inversion(indices)))
         sys.stdout.flush()
 
 
@@ -69,7 +72,6 @@ def main():
     print("sniffing on %s" % iface)
     sys.stdout.flush()
     sniff(filter="tcp", iface = iface, prn = lambda x: handle_pkt(x))
-    print("The number of unordered packets = {0}".format(count_inversion(indices)))
 
 if __name__ == '__main__':
     main()
