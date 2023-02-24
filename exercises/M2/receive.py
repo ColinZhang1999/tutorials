@@ -37,7 +37,7 @@ def get_if():
     for i in get_if_list():
         if "eth0" in i:
             iface=i
-            break;
+            break
     if not iface:
         print("Cannot find eth0 interface")
         exit(1)
@@ -60,9 +60,9 @@ def handle_pkt(pkt):
         print("got a packet")
         pkt.show2()
         indices.append(pkt[TCP].seq)
-        print("Total Bytes = {0}".format(pkt[Count].S2ByteCount+pkt[Count].S3ByteCount))
-        print("Lower path (via S2) = {0} bytes and upper path (via S3) = {1} bytes!".format(pkt[Count].S2ByteCount, pkt[Count].S3ByteCount))
-        # print("The number of unordered packets = {0}".format(count_inversion(indices)))
+        # print("Total Bytes = {0}".format(pkt[Count].S2ByteCount+pkt[Count].S3ByteCount))
+        # print("Lower path (via S2) = {0} bytes and upper path (via S3) = {1} bytes!".format(pkt[Count].S2ByteCount, pkt[Count].S3ByteCount))
+        print("The number of unordered packets = {0}".format(count_inversion(indices)))
         sys.stdout.flush()
 
 
