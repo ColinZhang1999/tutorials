@@ -4,17 +4,17 @@
   "bmv2_json": "build/m1.json",
   "table_entries": [
     {
-      "table": "MyIngress.ipv4_table",
+      "table": "MyIngress.ipv4_forward",
       "default_action": true,
       "action_name": "MyIngress.drop",
       "action_params": {}
     },
     {
-      "table": "MyIngress.ipv4_table",
+      "table": "MyIngress.ipv4_forward",
       "match": {
           "hdr.ipv4.dstAddr": "10.0.2.2"
       },
-      "action_name": "MyIngress.ipv4_forward",
+      "action_name": "MyIngress.set_ipv4_forward",
       "action_params": {
           "dstAddr": "00:00:00:00:04:00",
           "port": 2

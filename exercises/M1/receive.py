@@ -17,8 +17,8 @@ from scapy.all import (
 from scapy.layers.inet import _IPOption_HDR
 
 class Count(Packet):
-	name="Count"
-	fields_desc=[  IntField("S2ByteCount",0), IntField("S3ByteCount",0) ]
+    name="Count"
+    fields_desc=[  IntField("S2ByteCount",0), IntField("S3ByteCount",0) ]
 bind_layers(TCP, Count)
 
 def get_if():
@@ -47,10 +47,10 @@ class IPOption_MRI(IPOption):
                                    length_from=lambda pkt:pkt.count*4) ]
 def handle_pkt(pkt):
     if TCP in pkt and pkt[TCP].dport == 1234:
-        print "got a packet"
+        print("got a packet")
         pkt.show2()
-	print(pkt[Count].S2ByteCount)
-	print(pkt[Count].S3ByteCount)
+    print("Total Bytes = {0}".format(pkt[Count].S2ByteCount+pkt[Count].S3ByteCount))
+    print("Lower path (via S2) = {0} bytes and upper path (via S3) = {1} bytes!".format(pkt[Count].S2ByteCount, pkt[Count].S3ByteCount))
     sys.stdout.flush()
 
 

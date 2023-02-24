@@ -90,18 +90,14 @@ parser MyParser(packet_in packet,
     }
     state parse_tcp {
         packet.extract(hdr.tcp);
-        transition accept;
-    }
-    state parse_tcp {
-        packet.extract(hdr.tcp);
         transition select(hdr.ethernet.srcAddr){
             srcMacAddr: parse_count;
             default: accept;
 	    }
     }
     state parse_count{
-	packet.extract(hdr.count);
-	transition accept;
+        packet.extract(hdr.count);
+        transition accept;
     }
 }
 
@@ -145,9 +141,9 @@ control MyIngress(inout headers hdr,
         hdr.ethernet.dstAddr = dstAddr;
         hdr.ipv4.ttl = hdr.ipv4.ttl - 1;
         bit<32> value;
-        portCounter.read(value,standard_metadata.egress_spec);
+        portCounter.read(value,(bit<32>)standard_metadata.egress_spec);
         value=value+(bit<32>)hdr.ipv4.totalLen;
-        portCounter.write(standard_metadata.egress_spec,value);
+        portCounter.write((bit<32>)standard_metadata.egress_spec,value);
     }
 
     action update_count(){
@@ -161,7 +157,7 @@ control MyIngress(inout headers hdr,
         }
         actions = {
             drop;
-            set_random_port;
+            set_ecmp_port;
         }
         size = 1024;
     }
@@ -176,20 +172,20 @@ control MyIngress(inout headers hdr,
         size = 32;
     }
 
-    action ipv4_forward(macAddr_t dstAddr, egressSpec_t port) {
+    action set_ipv4_forward(macAddr_t dstAddr, egressSpec_t port) {
         standard_metadata.egress_spec = port;
         hdr.ethernet.srcAddr = hdr.ethernet.dstAddr;
         hdr.ethernet.dstAddr = dstAddr;
         hdr.ipv4.ttl = hdr.ipv4.ttl - 1;
     }
     
-    table ipv4_table {
+    table ipv4_forward {
         key = {
             hdr.ipv4.dstAddr: exact;
         }
         actions = {
             drop;
-            ipv4_forward;
+            set_ipv4_forward;
         }
         size = 1024;
         default_action = drop();
@@ -202,7 +198,7 @@ control MyIngress(inout headers hdr,
                 ecmp_forward.apply();
                 update_count();
             } else{
-                ipv4_table.apply();
+                ipv4_forward.apply();
             }
         }
     }
